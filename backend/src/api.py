@@ -11,22 +11,24 @@ app = Flask(__name__)
 setup_db(app)
 CORS(app)
 
-'''
-@TODO uncomment the following line to initialize the datbase
-!! NOTE THIS WILL DROP ALL RECORDS AND START YOUR DB FROM SCRATCH
-!! NOTE THIS MUST BE UNCOMMENTED ON FIRST RUN
-'''
 # db_drop_and_create_all()
 
-## ROUTES
-'''
-@TODO implement endpoint
-    GET /drinks
-        it should be a public endpoint
-        it should contain only the drink.short() data representation
-    returns status code 200 and json {"success": True, "drinks": drinks} where drinks is the list of drinks
-        or appropriate status code indicating reason for failure
-'''
+# ROUTES
+
+
+@app.route('/drinks')
+def get_drinks():
+    drinks = Drink.query.order_by(Drink.id).all()
+
+    if drinks is None:
+        abort(400)
+
+    formatted_drinks = [drink.short() for drink in drinks]
+
+    return jsonify({
+        'success': True,
+        'drinks': formatted_drinks
+    })
 
 
 '''
@@ -75,17 +77,20 @@ CORS(app)
 '''
 
 
-## Error Handling
+# Error Handling
 '''
 Example error handling for unprocessable entity
 '''
+
+
 @app.errorhandler(422)
 def unprocessable(error):
     return jsonify({
-                    "success": False, 
-                    "error": 422,
-                    "message": "unprocessable"
-                    }), 422
+        "success": False,
+        "error": 422,
+        "message": "unprocessable"
+    }), 422
+
 
 '''
 @TODO implement error handlers using the @app.errorhandler(error) decorator
