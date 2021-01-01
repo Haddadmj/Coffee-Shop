@@ -12,7 +12,7 @@ app = Flask(__name__)
 setup_db(app)
 CORS(app)
 
-# db_drop_and_create_all()
+db_drop_and_create_all()
 
 # ROUTES
 
@@ -102,7 +102,7 @@ def update_drink(self, id):
 
     return jsonify({
         'success': True,
-        'drinks': drink.long()
+        'drinks': [drink.long()]
     })
 
 
