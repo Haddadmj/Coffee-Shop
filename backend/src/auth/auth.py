@@ -25,6 +25,8 @@ class AuthError(Exception):
 # Auth Header
 
 def get_token_auth_header():
+    """ Return Token from Authorization Header if it is missing or formatted wrong will raise error 401"""
+
     if 'Authorization' not in request.headers:
         raise AuthError({"code": "authorization_header_missing",
                          "description":
@@ -47,6 +49,11 @@ def get_token_auth_header():
 
 
 def check_permissions(permission, payload):
+    """ Retrun True if permissons list in the payload, and permission is in the list.
+        Will return AuthError 400 if the permissons list not included in the payload.
+        Will return 401 if permisson not in permisson list
+    """
+
     if 'permissions' not in payload:
         raise AuthError({
             'code': 'invalid_claims',
