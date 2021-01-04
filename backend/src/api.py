@@ -70,7 +70,7 @@ def add_drink(self):
             'success': True,
             'drinks': [drink.long()]
         })
-    except:
+    except Exception:
         print(sys.exc_info())
         abort(422)
 
@@ -96,7 +96,7 @@ def update_drink(self, id):
         elif recipe:
             drink.recipe = json.dumps(recipe)
         drink.update()
-    except:
+    except Exception:
         print(sys.exc_info())
         abort(422)
 
